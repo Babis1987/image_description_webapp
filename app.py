@@ -152,10 +152,11 @@ def uploaded_processed(filename):
 @app.route("/clear", methods=["POST"])
 def clear_history():
     session.pop('all_results', None)
-    return redirect(url_for("home"))
+    return redirect(url_for("chat"))
+
+# Initialize models at module level for gunicorn
+GEN = DescriptionGenerator(model_type="flan-t5", lazy_load=True)
+EXECUTOR = ThreadPoolExecutor(max_workers=1)
 
 if __name__=="__main__":
-    GEN = DescriptionGenerator(model_type="mistral", lazy_load=True)
-    EXECUTOR = ThreadPoolExecutor(max_workers=1)
-    app.run(debug=True)
-
+    app.run(debug=True, host="0.0.0.0", port=7860)
