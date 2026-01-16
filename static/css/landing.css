@@ -1,0 +1,55 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e0ecff, #f8fbff);
+}
+
+.landing-card {
+  background: white;
+  padding: 48px;
+  border-radius: 18px;
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+}
+
+.landing-subtitle {
+  font-size: 18px;
+  color: #475569;
+  margin: 18px 0 32px 0;
+  line-height: 1.6;
+}
+
+.landing-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-secondary {
+  background: #0ea5e9;
+  color: white;
+}
+.btn-secondary:hover { background: #0284c7; }
+
+.btn-ghost {
+  background: transparent;
+  color: #2563eb;
+  border: 2px dashed #2563eb;
+}
+.btn-ghost:hover { background: rgba(37,99,235,0.08); }
+
+.landing-footnote {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #64748b;
+}

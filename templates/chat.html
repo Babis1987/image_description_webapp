@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Image Description Web App{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div class="top-bar">
+    <a class="btn-back" href="{{ url_for('index') }}">Back</a>
+  </div>
+
+  <h1 class="page-title">Image Description Web App</h1>
+
+  <div class="main-content">
+    <!-- Sidebar αριστερά -->
+    <form class="side-bar" method="POST" enctype="multipart/form-data">
+      <div class="left-panel">
+        <label class="field-label" for="modelSelect">Choose model</label>
+        <select name="model" id="modelSelect" class="model-select" required>
+          <option value="mistral" {% if model_choice == "mistral" %}selected{% endif %}>Mistral</option>
+          <option value="flan-t5" {% if model_choice == "flan-t5" %}selected{% endif %}>FLAN-T5</option>
+        </select>
+
+        <label class="file-btn">
+          <span id="file-label">Choose Files</span>
+          <input type="file" name="images" accept="image/*" multiple required 
+                 onchange="document.getElementById('file-label').textContent = this.files.length + ' file(s) selected'">
+        </label>
+        <button type="submit" class="clear-btn" form="clear-form">Clear History</button>
+      </div>
+
+      <div class="chatbox">
+        {% if results %}
+          {% for item in results %}
+            <div class="chat-item">{{ item.filename }}</div>
+          {% endfor %}
+        {% else %}
+          <div class="chat-placeholder">Selected files will appear here after Analyze.</div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="analyze-btn">Analyze</button>
+    </form>
+    <form id="clear-form" action="{{ url_for('clear_history') }}" method="POST"></form>
+
+
+    <!-- Output δεξιά -->
+    <div class="output-container">
+      {% if results %}
+        {% for item in results %}
+        <div class="output-card">
+          <div class="output-meta">
+            <span class="filename">{{ item.filename }}</span>
+            <span class="timestamp">{{ item.timestamp }}</span>
+          </div>
+          <div class="output-image">
+            <img src="{{ item.processed_url }}" alt="Annotated image">
+          </div>
+          <div class="output-text">
+            <h3>Description ({{ item.model }})</h3>
+            <p>{{ item.description }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="output-empty">
+          <p>No images yet. Choose files and click Analyze.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

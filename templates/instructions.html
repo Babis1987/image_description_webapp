@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Instructions{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>How to use the app</h1>
+
+    <ol>
+      <li>Start a new session or continue an existing one.</li>
+      <li>Select one or multiple image files.</li>
+      <li>Choose the LLM model (Mistral or FLAN-T5).</li>
+      <li>Click Upload to process the images.</li>
+      <li>Results appear in the chat area above.</li>
+      <li>Invalid or unsupported files are skipped with a warning.</li>
+    </ol>
+
+    <a class="btn-link" href="{{ url_for('index') }}">Back to home</a>
+  </div>
+{% endblock %}

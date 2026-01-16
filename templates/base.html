@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Image Description App{% endblock %}</title>
+
+  <!-- Base styles (shared everywhere) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+
+  <!-- Page-specific styles -->
+  {% block styles %}{% endblock %}
+</head>
+<body>
+
+  {% block content %}{% endblock %}
+
+</body>
+</html>

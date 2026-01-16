@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Description Web App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Image Description Web App</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="images" accept="image/*" multiple required>
+      <label for="model">Choose LLM model:</label>
+      <select name="model" id="model" required>
+        <option value="mistral" {% if model_choice == "mistral" %}selected{% endif %}>Mistral</option>
+        <option value="flan-t5" {% if model_choice == "flan-t5" %}selected{% endif %}>FLAN-T5</option>
+      </select>
+      <br><br>
+      <button type="submit">Upload Image</button>
+    </form>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+    
+    {% if results %}
+    <form action="/clear" method="POST" style="display:inline;">
+        <button type="submit" class="btn-clear">Clear History</button>
+    </form>
+    
+    <h3>Results</h3>
+    <div class="results-container">  
+        {% for item in results %}
+            <div class="result-item"> 
+                <p><b>{{ item.filename }}</b> - <small>{{ item.timestamp }}</small></p>
+
+                <p>Processed image:</p>
+                <div class="preview">
+                    <img src="{{ item.processed_url }}" alt="Processed image">
+                </div>
+
+                <h3>Description ({{ item.model }})</h3>
+                <p>{{ item.description }}</p>
+
+                <hr>
+            </div>  
+        {% endfor %}
+    </div>  
+    {% endif %}
+    
+  </div>
+</body>
+</html>

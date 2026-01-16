@@ -1,0 +1,129 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #99bee4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: 80px auto;
+    background: #4bf589;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
+}
+
+.preview img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.results-container {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.result-item {
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #555;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* ===== Landing Page ===== */
+
+.landing {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e0ecff, #f8fbff);
+}
+
+.landing-card {
+  background: white;
+  padding: 48px;
+  border-radius: 18px;
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+}
+
+.landing-subtitle {
+  font-size: 18px;
+  color: #475569;
+  margin: 18px 0 32px 0;
+  line-height: 1.6;
+}
+
+.landing-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Make links look like buttons */
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  display: block;
+  width: 100%;
+  padding: 16px 18px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+}
+
+/* Primary button */
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+/* Secondary button */
+.btn-secondary {
+  background: #0ea5e9;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #0284c7;
+}
+
+/* Ghost / tertiary */
+.btn-ghost {
+  background: transparent;
+  color: #2563eb;
+  border: 2px dashed #2563eb;
+}
+
+.btn-ghost:hover {
+  background: rgba(37,99,235,0.08);
+}
+
+.landing-footnote {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #64748b;
+}

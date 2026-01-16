@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #99bee4;
+}
+
+.container {
+  max-width: 700px;
+  margin: 80px auto;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+}
+
+p {
+  color: #555;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.muted {
+  color: #64748b;
+}
+
+/* shared button styles */
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  display: block;
+  width: 100%;
+  padding: 16px 18px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+}
