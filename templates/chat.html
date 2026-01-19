@@ -37,6 +37,9 @@
           {% for item in results %}
             <div class="chat-item">{{ item.filename }}</div>
           {% endfor %}
+          {% if message %}
+            <div class="chat-message">{{ message }}</div>
+          {% endif %}
         {% else %}
           <div class="chat-placeholder">Selected files will appear here after Analyze.</div>
         {% endif %}

@@ -1,7 +1,5 @@
 """
-Image processing pipeline that integrates all modules.
-
-Simple functional approach for orchestrating:
+Image processing pipeline that integrates all modules:
 - Face detection
 - Emotion analysis  
 - Visualization
@@ -32,22 +30,13 @@ def process_image(
 ) -> Dict[str, Any]:
     """
     Process an image through the complete pipeline.
-    
-    Simple functional orchestration of all modules.
-    
-    Steps:
-    1. Detect faces
-    2. Analyze each face (emotion, age, gender)
-    3. Calculate face positions
-    4. Generate visualization (optional)
-    5. Generate LLM description (optional)
-    
+
     Args:
-        image: BGR image as numpy array (from cv2.imread)
-        detector: FaceDetector instance (creates new if None)
-        analyzer: FaceAnalyzer instance (creates new if None)
-        visualizer: ImageVisualizer instance (creates new if None)
-        generator: DescriptionGenerator instance (None if not using LLM)
+        image: BGR image as numpy array
+        detector: FaceDetector instance 
+        analyzer: FaceAnalyzer instance 
+        visualizer: ImageVisualizer instance 
+        generator: DescriptionGenerator instance
         generate_description: Whether to generate LLM description
         visualize: Whether to generate annotated image
     
@@ -116,13 +105,6 @@ def process_image(
                 if not all(k in bbox_dict for k in ["x", "y", "w", "h"]):
                     logger.warning(f"Face {i}: Invalid bbox structure, skipping")
                     continue
-                
-                bbox_tuple = (
-                    bbox_dict["x"],
-                    bbox_dict["y"],
-                    bbox_dict["w"],
-                    bbox_dict["h"]
-                )
                 
                 # Validate bbox values (must be positive and reasonable)
                 x = bbox_dict["x"]

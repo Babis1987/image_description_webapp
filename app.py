@@ -1,3 +1,5 @@
+from numpy import ndarray
+from typing import Dict, Any
 from flask import Flask, render_template, request, send_from_directory, session, redirect, url_for
 from config import ORIGINAL_DIR, PROCESSED_DIR, SECRET_KEY, allowed_file
 from shutil import copyfile
@@ -7,38 +9,61 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 import cv2
 
-
-    
-
-
+# Create app and define its secret key
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 
+# Create description generator instance once
+GEN = DescriptionGenerator(model_type="mistral", lazy_load=True)
+
+# Threading to handle long processing periods with timeout
+EXECUTOR = ThreadPoolExecutor(max_workers=1)
+
+
 def process_one_file(file, model_choice):
+    """
+    Function to process each file seperately. Runs inside a loop.
+    
+    Args:
+
+    image file: File to be processed
+    model_choice: LLM choice for description (flan-T5 or Mistral)
+
+    Return:
+    
+    """
+
+    # Save filename in a variable for easy use
     filename = file.filename or ""
     if not filename:
         return None, "Empty filename"
 
+    # Define the path to store the uploaded image file
     save_path = ORIGINAL_DIR / filename
     file.save(save_path)
-
+    
+    # Get the image and handle unsupported cases
     image = cv2.imread(str(save_path))
     if image is None:
         return None, f"Not a valid image (broken or unsupported format)"
 
     try:
         try:
+            # Ren pipeline with thread to handle very long processes
             result = run_pipeline_with_timeout(image, timeout_sec=600)  # 10 λεπτά = 600 sec
         except TimeoutError:
             return None, "Timeout: processing exceeded 10 minutes"
     except Exception as e:
         return None, f"Processing error ({type(e).__name__})"
 
+    # Define path to store the annotated image and save it
     processed_path = PROCESSED_DIR / filename
     annotated = result.get("annotated_image") if result.get("annotated_image") is not None else image
     cv2.imwrite(str(processed_path), annotated)
 
+    # Define Web URL to serve annotated files to users from HTTP
     processed_url = f"/uploads/processed/{filename}"
+
     description = (result.get("description") or "").strip()
     if not description:
         # empty response handling
@@ -52,7 +77,19 @@ def process_one_file(file, model_choice):
         "model": model_choice
     }, None
 
-def run_pipeline_with_timeout(image, timeout_sec: int):
+def run_pipeline_with_timeout(image: ndarray, timeout_sec: int) -> Dict[str, Any]:
+    """
+    Excecute pipeline with threading to handle timeout cases.
+
+    Args:
+
+    image: BGR image as numpy array
+
+    
+    :param image: Description
+    :param timeout_sec: Description
+    :type timeout_sec: int
+    """
     future = EXECUTOR.submit(
         process_image,
         image=image,
@@ -125,7 +162,7 @@ def chat():
     return render_template(
         "chat.html", 
         model_choice=model_choice, 
-        results=session.get('all_results', [])[::-1],  # ⬅️ Reverse για νεότερα πρώτα
+        results=session.get('all_results', [])[::-1], 
         message=message
     )
 
@@ -154,9 +191,6 @@ def clear_history():
     session.pop('all_results', None)
     return redirect(url_for("chat"))
 
-# Initialize models at module level for gunicorn
-GEN = DescriptionGenerator(model_type="flan-t5", lazy_load=True)
-EXECUTOR = ThreadPoolExecutor(max_workers=1)
-
 if __name__=="__main__":
-    app.run(debug=True, host="0.0.0.0", port=7860)
+    app.run(host="0.0.0.0", port=7860)
+

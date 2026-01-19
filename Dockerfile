@@ -1,10 +1,17 @@
 # Dockerfile for Hugging Face Spaces
 FROM python:3.10-slim
 
-# Set working directory
-WORKDIR /app
+# 1. Δημιουργία χρήστη με UID 1000 (απαραίτητο για HF Spaces)
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
 
-# Install system dependencies
+# 2. Ορισμός working directory εντός του home του χρήστη
+WORKDIR $HOME/app
+
+# 3. Εγκατάσταση συστήματος (πρέπει να γίνει ως root)
+USER root
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -14,28 +21,27 @@ RUN apt-get update && apt-get install -y \
     libgomp1 \
     wget \
     && rm -rf /var/lib/apt/lists/*
+USER user
 
-# Copy requirements first for caching
-COPY requirements.txt .
-
-# Install Python dependencies
+# 4. Αντιγραφή requirements και εγκατάσταση
+COPY --chown=user requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY . .
+# 5. Αντιγραφή κώδικα με τα σωστά permissions
+COPY --chown=user . .
 
-# Create necessary directories
+# 6. Δημιουργία φακέλων (θα έχουν πλέον δικαιώματα εγγραφής)
 RUN mkdir -p instance/uploads/original instance/uploads/processed instance/logs
 
-# Set environment variables
+# 7. Περιβάλλον
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 ENV MODEL_TYPE=flan-t5
 ENV USE_GPU=False
 ENV USE_4BIT_QUANTIZATION=False
 
-# Expose port (Hugging Face uses 7860)
+# 8. Πόρτα (Hugging Face uses 7860)
 EXPOSE 7860
 
-# Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:7860", "--timeout", "300", "--workers", "1", "app:app"]
+# 9. Εκτέλεση
+CMD ["gunicorn", "--bind", "0.0.0.0:7860", "--timeout", "600", "--workers", "1", "app:app"]

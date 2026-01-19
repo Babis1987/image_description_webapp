@@ -1,28 +1,25 @@
-# Image Description Bot - Requirements
-# Python >=3.10,<3.12
-
-# Web Framework
+# --- Web Framework & Server ---
 flask==3.1.2
 flask-cors==6.0.1
 gunicorn==23.0.0
 werkzeug==3.1.4
-
-# Environment & Configuration
 python-dotenv==1.2.1
 
-# Computer Vision & Face Detection
+# --- Computer Vision & Face Detection ---
+# Χρησιμοποιούμε headless για να μην έχουμε σφάλματα με βιβλιοθήκες οθόνης στο Docker
 opencv-python-headless==4.12.0.88
 deepface==0.0.79
 mediapipe==0.10.14
 retina-face==0.0.17
 mtcnn==1.0.0
 
-# Deep Learning Frameworks (CPU-only for free hosting)
+# --- Deep Learning Frameworks (CPU-only για Hugging Face Spaces) ---
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.2.0+cpu
+torchvision==0.17.0+cpu
 tensorflow-cpu==2.15.0
 
-# Transformers & LLM
+# --- Transformers & LLM Components ---
 transformers==4.57.3
 accelerate==1.12.0
 sentencepiece==0.2.1
@@ -30,12 +27,13 @@ safetensors==0.7.0
 tokenizers==0.22.1
 huggingface-hub==0.36.0
 
-# Data Processing
-numpy==1.26.4
+# --- Data Processing & Utilities ---
+# Το numpy παραμένει κάτω από 2.0 για συμβατότητα με παλιότερα AI frameworks
+numpy>=1.26.4,<2.0.0
 pandas==2.3.3
 pillow==10.2.0
-
-# Utilities
 tqdm==4.67.1
 pyyaml==6.0.3
 requests==2.32.5
+# Το protobuf κλειδώνεται για να αποφευχθούν conflicts μεταξύ Mediapipe/Tensorflow
+protobuf==3.20.3

@@ -57,7 +57,7 @@ class FaceAnalyzer:
 
         face_rgb = cv2.cvtColor(face_bgr, cv2.COLOR_BGR2RGB)
         
-        # IMPORTANT: detector_backend="skip" to avoid re-detecting face
+        # IMPORTANT: detector_backend="skip" to avoid re-detecting face - We have already done this step
         # Note: img_path can accept numpy array (not just file path)
         analysis = DeepFace.analyze(
             img_path=face_rgb,
@@ -82,7 +82,7 @@ class FaceAnalyzer:
         
         # Add gender if requested
         if 'gender' in self.actions:
-            result["gender"] = analysis.get("dominant_gender", None)  # 'Man' or 'Woman'
-            result["gender_scores"] = analysis.get("gender", {})  # Dict with Man/Woman probabilities
+            result["gender"] = analysis.get("dominant_gender", None)  
+            result["gender_scores"] = analysis.get("gender", {})  
         
         return result

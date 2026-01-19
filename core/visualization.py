@@ -1,8 +1,5 @@
 """
 Visualization module for drawing face detection and emotion results.
-
-Provides functions to annotate images with bounding boxes, emotion labels,
-and confidence scores. Based on functions from the notebook.
 """
 
 import numpy as np
@@ -12,11 +9,9 @@ from typing import List, Dict, Any, Optional
 
 from config import EMOTION_COLORS_BGR, VISUALIZATION
 
-
 class ImageVisualizer:
     """
     Visualizer for face detection and emotion analysis results.
-    
     Draws bounding boxes with emotion-based colors and labels.
     """
     
@@ -45,7 +40,6 @@ class ImageVisualizer:
     def _calculate_scale_factor(self, image_height: int, image_width: int) -> float:
         """
         Calculate scale factor based on image resolution.
-        
         Uses the larger dimension to determine scaling.
         
         Args:
@@ -65,21 +59,15 @@ class ImageVisualizer:
     ) -> np.ndarray:
         """
         Draw bounding boxes and emotion labels on image.
-        
-        Based on `draw_results` from notebook.
         Box color changes based on detected emotion.
         Thickness and font size scale automatically with image resolution.
         
         Args:
             image_bgr: Original BGR image
-            results: List of face detection/analysis results.
-                    Each dict should contain:
-                    - 'bbox': (x, y, w, h) tuple
-                    - 'emotion_label': str (e.g. 'happy', 'sad')
-                    - 'emotion_scores': dict with emotion probabilities (optional)
+            results: List of face detection and emotion analysis results.
         
         Returns:
-            Annotated image with bounding boxes and labels (BGR format)
+            Annotated image with bounding boxes, emotion labels and model confidence in bgr format
         """
         img = image_bgr.copy()
         img_height, img_width = img.shape[:2]

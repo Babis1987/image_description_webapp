@@ -1,6 +1,5 @@
 """
 Face detection module using DeepFace.
-
 Detects faces in images using multiple backend detectors.
 """
 

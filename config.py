@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env file
+# Load .env file -> os.getenv get values from .env file
 load_dotenv()
 
 # Base directories
@@ -130,9 +130,9 @@ def validate_config():
         try:
             import torch
             if not torch.cuda.is_available():
-                errors.append("⚠️  USE_GPU=True but CUDA is not available.")
+                errors.append(" USE_GPU=True but CUDA is not available.")
         except ImportError:
-            errors.append("⚠️  PyTorch not installed but USE_GPU=True")
+            errors.append(" PyTorch not installed but USE_GPU=True")
     
     return errors
 
@@ -142,41 +142,41 @@ if __name__ == "__main__":
     print("\n" + "="*60)
     print("IMAGE DESCRIPTION BOT - Configuration Summary")
     print("="*60)
-    print(f"\n📁 Directories:")
+    print(f"\n Directories:")
     print(f"   BASE_DIR:      {BASE_DIR}")
     print(f"   INSTANCE_DIR:  {INSTANCE_DIR}")
     print(f"   UPLOAD_DIR:    {UPLOAD_DIR}")
     print(f"   LOG_DIR:       {LOG_DIR}")
     
-    print(f"\n⚙️  Flask Config:")
+    print(f"\n Flask Config:")
     print(f"   DEBUG:         {DEBUG}")
     print(f"   MAX_UPLOAD:    {MAX_CONTENT_LENGTH / (1024*1024):.0f} MB")
     
-    print(f"\n🤖 Model Config:")
+    print(f"\n Model Config:")
     print(f"   Model:         {MODEL_CONFIG['mistral_model_id']}")
     print(f"   GPU:           {MODEL_CONFIG['use_gpu']}")
     print(f"   4-bit Quant:   {MODEL_CONFIG['use_4bit_quantization']}")
     
-    print(f"\n🎨 Face Detection:")
+    print(f"\n Face Detection:")
     print(f"   Backend:       {FACE_DETECTION['backend']}")
     print(f"   Margin:        {FACE_DETECTION['margin']:.0%}")
     
-    print(f"\n💬 LLM Generation:")
+    print(f"\n LLM Generation:")
     print(f"   Enabled:       {LLM_CONFIG['enable_description']}")
     print(f"   Max Tokens:    {LLM_CONFIG['max_new_tokens']}")
     print(f"   Temperature:   {LLM_CONFIG['temperature']}")
     
-    print(f"\n🧹 Cleanup:")
+    print(f"\n Cleanup:")
     print(f"   Auto-cleanup:  {CLEANUP_CONFIG['auto_cleanup']}")
     print(f"   Retention:     {CLEANUP_CONFIG['retention_hours']} hours")
     
     # Validate
     validation_errors = validate_config()
     if validation_errors:
-        print(f"\n❌ Configuration Errors:")
+        print(f"\n Configuration Errors:")
         for error in validation_errors:
             print(f"   {error}")
     else:
-        print(f"\n✅ Configuration validated successfully!")
+        print(f"\n Configuration validated successfully!")
     
     print("="*60 + "\n")
